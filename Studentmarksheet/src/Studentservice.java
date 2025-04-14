@@ -57,8 +57,22 @@ public class Studentservice {
                 }
                 marks.put(subject, mark);
             }
+            int projectMark;
+            while (true) {
+                System.out.print("Enter project mark (out of 10): ");
+                projectMark = getIntInput();
+                try {
+                    if (projectMark < 0 || projectMark > 10) {
+                        throw new InvalidMarksException("Project mark must be between 0 and 10.");
+                    }
+                    break;
+                } catch (InvalidMarksException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+            }
 
-            Student student = new Student(name, rollNumber, marks);
+            Student student = new Student(name, rollNumber, marks, projectMark);
+
             students.put(rollNumber, student);
             System.out.println("Student added successfully!");
 

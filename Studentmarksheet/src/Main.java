@@ -75,7 +75,6 @@ class StudentReportCardGenerator {
                     viewReportCards();
                 }
             }
-
             // Filter students by the selected grade
             for (Student s : students.values()) {
                 if (s.calculateGrade().equals(grade)) {
@@ -88,7 +87,6 @@ class StudentReportCardGenerator {
             System.out.println("Invalid option.");
             return;
         }
-
         if (toDisplay.isEmpty()) {
             System.out.println("No students found for the given criteria.");
             viewReportCards();
@@ -98,7 +96,6 @@ class StudentReportCardGenerator {
             }
         }
     }
-
     private static void printReportCard(Student student) {
         System.out.println("\n----------------------------------------");
         System.out.println("Name      : " + student.getName());
@@ -107,6 +104,7 @@ class StudentReportCardGenerator {
         for (Map.Entry<String, Integer> entry : student.getSubjectMarks().entrySet()) {
             System.out.printf("  - %-10s : %3d\n", entry.getKey(), entry.getValue());
         }
+        System.out.println("Project   : " + student.getProjectMark() + " / 10");
         System.out.printf("Average   : %.2f\n", student.getAverage());
         System.out.println("Grade     : " + student.calculateGrade());
         System.out.println("----------------------------------------");
