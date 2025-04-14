@@ -4,24 +4,26 @@ public class Student implements Gradable {
     private String name;
     private int rollNumber;
     private Map<String, Integer> subjectMarks;
+    private int projectMark;
 
-    public Student(String name, int rollNumber, Map<String, Integer> subjectMarks) throws InvalidMarksException {
+    public Student(String name, int rollNumber, Map<String, Integer> subjectMarks, int projectMark) throws InvalidMarksException {
         this.name = name;
         this.rollNumber = rollNumber;
         this.subjectMarks = new HashMap<>();
 
         for (Map.Entry<String, Integer> entry : subjectMarks.entrySet()) {
             int mark = entry.getValue();
-
-            try {
-                if (mark < 0 || mark > 100) {
-                    throw new InvalidMarksException("Marks for " + entry.getKey() + " are out of range (0–100).");
-                }
-                this.subjectMarks.put(entry.getKey(), mark);
-            } catch (InvalidMarksException e) {
-                throw e;
+            if (mark < 0 || mark > 100) {
+                throw new InvalidMarksException("Marks for " + entry.getKey() + " are out of range (0–100).");
             }
+            this.subjectMarks.put(entry.getKey(), mark);
         }
+
+        if (projectMark < 0 || projectMark > 10) {
+            throw new InvalidMarksException("Project mark must be between 0 and 10.");
+        }
+
+        this.projectMark = projectMark;
     }
 
     public String getName() {
@@ -36,12 +38,17 @@ public class Student implements Gradable {
         return subjectMarks;
     }
 
+    public int getProjectMark() {
+        return projectMark;
+    }
     public double getAverage() {
         int total = 0;
         for (int mark : subjectMarks.values()) {
             total += mark;
         }
-        return subjectMarks.size() > 0 ? (double) total / subjectMarks.size() : 0;
+        // normalize project mark (0-10) to scale of 100
+        total += (projectMark * 10);
+        return (double) total / (subjectMarks.size() + 1);
     }
 
     public String calculateGrade() {
