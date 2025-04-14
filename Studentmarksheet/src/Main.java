@@ -7,7 +7,7 @@ class StudentReportCardGenerator {
 
     public static void main(String[] args) {
         while (true) {
-            System.out.println("\n====== Student Report Card Generator 1======");
+            System.out.println("\n====== Student Report bcdf Card Generator 1======");
             System.out.println("1. Add Student");
             System.out.println("2. View Report Cards (All / By Grade)");
             System.out.println("3. Exit");
