@@ -13,7 +13,6 @@ class StudentReportCardGenerator {
             System.out.println("3. Exit");
             System.out.print("Enter your choice: ");
             int choice = getIntInput();
-
             switch (choice) {
                 case 1:
                     studentService.addStudent();
@@ -70,8 +69,10 @@ class StudentReportCardGenerator {
                 // Check if the input is valid
                 if (grade.equals("A") || grade.equals("B") || grade.equals("C") || grade.equals("D") || grade.equals("F")) {
                     validGrade = true;  // Exit the loop if the grade is valid
-                } else {
+                }
+                else {
                     System.out.println("Invalid grade input. Please enter a valid grade (A, B, C, D, F).");
+                    viewReportCards();
                 }
             }
 
@@ -90,6 +91,7 @@ class StudentReportCardGenerator {
 
         if (toDisplay.isEmpty()) {
             System.out.println("No students found for the given criteria.");
+            viewReportCards();
         } else {
             for (Student s : toDisplay) {
                 printReportCard(s);
