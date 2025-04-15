@@ -10,6 +10,7 @@ public class Student implements Gradable {
         this.name = name;
         this.rollNumber = rollNumber;
         this.subjectMarks = new HashMap<>();
+        this.projectMark = projectMark;
 
         for (Map.Entry<String, Integer> entry : subjectMarks.entrySet()) {
             int mark = entry.getValue();
@@ -18,12 +19,6 @@ public class Student implements Gradable {
             }
             this.subjectMarks.put(entry.getKey(), mark);
         }
-
-        if (projectMark < 0 || projectMark > 10) {
-            throw new InvalidMarksException("Project mark must be between 0 and 10.");
-        }
-
-        this.projectMark = projectMark;
     }
 
     public String getName() {
