@@ -6,10 +6,6 @@ public class Student {
     private Map<String, Integer> subjectMarks;
     private int projectMark;
 
-    public Student() {
-        this.subjectMarks = new HashMap<>();
-    }
-
     // Constructor with parameters
     public Student(String name, int rollNumber, Map<String, Integer> subjectMarks, int projectMark) {
         this.name = name;
@@ -22,31 +18,15 @@ public class Student {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getRollNumber() {
         return rollNumber;
-    }
-
-    public void setRollNumber(int rollNumber) {
-        this.rollNumber = rollNumber;
     }
 
     public Map<String, Integer> getSubjectMarks() {
         return subjectMarks;
     }
 
-    public void setSubjectMarks(Map<String, Integer> subjectMarks) {
-        this.subjectMarks = subjectMarks;
-    }
-
     public int getProjectMark() {
         return projectMark;
-    }
-
-    public void setProjectMark(int projectMark) {
-        this.projectMark = projectMark;
     }
 }
