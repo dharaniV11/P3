@@ -8,7 +8,6 @@ public class Main {
     private static StudentService studentService = new StudentService(students, scanner);
 
     public static void main(String[] args) {
-        configureLogger();
         while (true) {
             logger.info("\n====== Student Report Card Generator ======");
             logger.info("1. Add Student");
@@ -110,21 +109,6 @@ public class Main {
         logger.info(String.format("Average   : %.2f", studentService.getAverage(student)));
         logger.info("Grade     : " + studentService.calculateGrade(student));
         logger.info("----------------------------------------");
-    }
-    private static void configureLogger() {
-        Logger rootLogger = Logger.getLogger("");
-        Handler[] handlers = rootLogger.getHandlers();
-
-        for (Handler handler : handlers) {
-            handler.setFormatter(new SimpleFormatter() {
-                private static final String FORMAT = "%s%n";
-
-                @Override
-                public synchronized String format(LogRecord record) {
-                    return String.format(FORMAT, record.getMessage());
-                }
-            });
-        }
     }
 
 }
