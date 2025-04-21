@@ -6,7 +6,6 @@ public class Student {
     private Map<String, Integer> subjectMarks;
     private int projectMark;
 
-    // Default constructor for JavaBean compatibility
     public Student() {
         this.subjectMarks = new HashMap<>();
     }
@@ -19,7 +18,6 @@ public class Student {
         this.projectMark = projectMark;
     }
 
-    // Getter and Setter methods for JavaBean compatibility
     public String getName() {
         return name;
     }
