@@ -14,7 +14,6 @@ public class StudentService implements Gradable {
             String name = getValidName();
             int rollNumber = getUniqueRollNumber();
 
-            // Fixed subjects
             String[] subjects = { "English", "Tamil", "Maths", "Science", "Social" };
             Map<String, Integer> marks = new HashMap<>();
 
@@ -25,7 +24,6 @@ public class StudentService implements Gradable {
 
             int projectMark = getValidProjectMark();
 
-            // Create Student object (bean)
             Student student = new Student(name, rollNumber, marks, projectMark);
             students.put(rollNumber, student);
             System.out.println("Student added successfully!");

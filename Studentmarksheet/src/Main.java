@@ -67,7 +67,8 @@ public class Main {
         else
             {
             System.out.println("invalid input, try again");
-                return;
+            viewReportCards();
+            return;
         }
 
         if (toDisplay.isEmpty()) {
