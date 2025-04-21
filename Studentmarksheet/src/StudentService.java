@@ -1,6 +1,8 @@
 import java.util.*;
+import java.util.logging.*;
 
 public class StudentService implements Gradable {
+    Logger logger = Logger.getLogger(StudentService.class.getName());
     private Map<Integer, Student> students;
     private Scanner scanner;
 
@@ -26,21 +28,21 @@ public class StudentService implements Gradable {
 
             Student student = new Student(name, rollNumber, marks, projectMark);
             students.put(rollNumber, student);
-            System.out.println("Student added successfully!");
+            logger.info("Student added successfully!");
 
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            logger.warning("An error occurred: " + e.getMessage());
         }
     }
 
     private String getValidName() {
         String name;
         while (true) {
-            System.out.print("Enter student name: ");
+            logger.info("Enter student name: ");
             name = scanner.nextLine().trim();
             if (name.matches("[A-Za-z\\s]+")) break;
             else{
-                System.out.println("Invalid name. Name cannot be empty or numeric only.");
+                logger.warning("Invalid name. Name cannot be empty or numeric only.");
             }
         }
         return name;
@@ -49,10 +51,10 @@ public class StudentService implements Gradable {
     private int getUniqueRollNumber() {
         int rollNumber;
         while (true) {
-            System.out.print("Enter roll number: ");
+            logger.info("Enter roll number: ");
             rollNumber = getIntInput();
             if (students.containsKey(rollNumber)) {
-                System.out.println("Roll number already exists. Please enter a unique roll number.");
+                logger.warning("Roll number already exists. Please enter a unique roll number.");
             } else {
                 break;
             }
@@ -63,7 +65,7 @@ public class StudentService implements Gradable {
     private int getValidMark(String subject) {
         int mark;
         while (true) {
-            System.out.print("Enter marks for " + subject + ": ");
+            logger.info("Enter marks for " + subject + ": ");
             mark = getIntInput();
             try {
                 if (mark < 0 || mark > 100) {
@@ -71,7 +73,7 @@ public class StudentService implements Gradable {
                 }
                 break;
             } catch (InvalidMarksException e) {
-                System.out.println("Error: " + e.getMessage());
+                logger.warning("Error: " + e.getMessage());
             }
         }
         return mark;
@@ -80,7 +82,7 @@ public class StudentService implements Gradable {
     private int getValidProjectMark() {
         int projectMark;
         while (true) {
-            System.out.print("Enter project mark (out of 10): ");
+            logger.info("Enter project mark (out of 10): ");
             projectMark = getIntInput();
             try {
                 if (projectMark < 0 || projectMark > 10) {
@@ -88,7 +90,7 @@ public class StudentService implements Gradable {
                 }
                 break;
             } catch (InvalidMarksException e) {
-                System.out.println("Error: " + e.getMessage());
+                logger.warning("Error: " + e.getMessage());
             }
         }
         return projectMark;
@@ -101,7 +103,7 @@ public class StudentService implements Gradable {
                 scanner.nextLine(); // consume newline
                 return num;
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
+                logger.warning("Invalid input. Please enter a valid number.");
                 scanner.nextLine(); // flush
             }
         }

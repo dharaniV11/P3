@@ -1,17 +1,20 @@
 import java.util.*;
+import java.util.logging.*;
 
 public class Main {
+    private static Logger logger = Logger.getLogger(Main.class.getName());
     private static Map<Integer, Student> students = new HashMap<>();
     private static Scanner scanner = new Scanner(System.in);
     private static StudentService studentService = new StudentService(students, scanner);
 
     public static void main(String[] args) {
+        configureLogger();
         while (true) {
-            System.out.println("\n====== Student Report Card Generator ======");
-            System.out.println("1. Add Student");
-            System.out.println("2. View Report Cards (All / By Grade)");
-            System.out.println("3. Exit");
-            System.out.print("Enter your choice: ");
+            logger.info("\n====== Student Report Card Generator ======");
+            logger.info("1. Add Student");
+            logger.info("2. View Report Cards (All / By Grade)");
+            logger.info("3. Exit");
+            logger.info("Enter your choice: ");
             int choice = getIntInput();
             switch (choice) {
                 case 1:
@@ -21,10 +24,10 @@ public class Main {
                     viewReportCards();
                     break;
                 case 3:
-                    System.out.println("Exiting... Thank you!");
+                    logger.info("Exiting... Thank you!");
                     return;
                 default:
-                    System.out.println("Invalid choice. Try again.");
+                    logger.warning("Invalid choice. Try again.");
             }
         }
     }
@@ -36,7 +39,7 @@ public class Main {
                 scanner.nextLine(); // consume newline
                 return num;
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
+                logger.warning("Invalid input. Please enter a valid number.");
                 scanner.nextLine(); // flush
             }
         }
@@ -44,12 +47,12 @@ public class Main {
 
     private static void viewReportCards() {
         if (students.isEmpty()) {
-            System.out.println("No students to show.");
+            logger.info("No students to show.");
             return;
         }
 
-        System.out.println("\n1. View All Students\n2. Filter by Grade");
-        System.out.print("Choose option: ");
+        logger.info("\n1. View All Students\n2. Filter by Grade");
+        logger.info("Choose option: ");
         int option = getIntInput();
 
         List<Student> toDisplay = new ArrayList<>();
@@ -66,13 +69,13 @@ public class Main {
         }
         else
             {
-            System.out.println("invalid input, try again");
+            logger.warning("invalid input, try again");
             viewReportCards();
             return;
         }
 
         if (toDisplay.isEmpty()) {
-            System.out.println("No students found for the given criteria.");
+            logger.info("No students found for the given criteria.");
             viewReportCards();
         } else {
             for (Student s : toDisplay) {
@@ -84,28 +87,44 @@ public class Main {
     private static String getGradeFilter() {
         String grade = "";
         while (true) {
-            System.out.print("Enter grade to filter (A/B/C/D/F): ");
+            logger.info("Enter grade to filter (A/B/C/D/F): ");
             grade = scanner.nextLine().trim().toUpperCase();
         if (grade.matches("[ABCDF]")) {
                 break;
             }
-            System.out.println("Invalid input. Try again.");
+            logger.warning("Invalid input. Try again.");
         }
         return grade;
     }
 
     private static void printReportCard(Student student) {
-        System.out.println("\nREPORT CARD: " + student.getName().toUpperCase());
-        System.out.println("----------------------------------------");
-        System.out.println("Name      : " + student.getName().toUpperCase());
-        System.out.println("Roll No.  : " + student.getRollNumber());
-        System.out.println("Subjects  :");
+        logger.info("\nREPORT CARD: " + student.getName().toUpperCase());
+        logger.info("----------------------------------------");
+        logger.info("Name      : " + student.getName().toUpperCase());
+        logger.info("Roll No.  : " + student.getRollNumber());
+        logger.info("Subjects  :");
         for (Map.Entry<String, Integer> entry : student.getSubjectMarks().entrySet()) {
-            System.out.printf("  - %-10s : %3d\n", entry.getKey(), entry.getValue());
+            logger.info(String.format("  - %-10s : %3d\n", entry.getKey(), entry.getValue()));
         }
-        System.out.println("Project   : " + student.getProjectMark() + " / 10");
-        System.out.printf("Average   : %.2f\n", studentService.getAverage(student));
-        System.out.println("Grade     : " + studentService.calculateGrade(student));
-        System.out.println("----------------------------------------");
+        logger.info("Project   : " + student.getProjectMark() + " / 10");
+        logger.info(String.format("Average   : %.2f", studentService.getAverage(student)));
+        logger.info("Grade     : " + studentService.calculateGrade(student));
+        logger.info("----------------------------------------");
     }
+    private static void configureLogger() {
+        Logger rootLogger = Logger.getLogger("");
+        Handler[] handlers = rootLogger.getHandlers();
+
+        for (Handler handler : handlers) {
+            handler.setFormatter(new SimpleFormatter() {
+                private static final String FORMAT = "%s%n";
+
+                @Override
+                public synchronized String format(LogRecord record) {
+                    return String.format(FORMAT, record.getMessage());
+                }
+            });
+        }
+    }
+
 }
