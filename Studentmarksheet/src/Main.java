@@ -64,9 +64,15 @@ public class Main {
                 }
             }
         }
+        else
+            {
+            System.out.println("invalid input, try again");
+                return;
+        }
 
         if (toDisplay.isEmpty()) {
             System.out.println("No students found for the given criteria.");
+            viewReportCards();
         } else {
             for (Student s : toDisplay) {
                 printReportCard(s);
@@ -79,7 +85,7 @@ public class Main {
         while (true) {
             System.out.print("Enter grade to filter (A/B/C/D/F): ");
             grade = scanner.nextLine().trim().toUpperCase();
-        if (grade.matches("[A,B,C,D,F]")) {
+        if (grade.matches("[ABCDF]")) {
                 break;
             }
             System.out.println("Invalid input. Try again.");

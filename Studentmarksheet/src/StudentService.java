@@ -40,10 +40,9 @@ public class StudentService implements Gradable {
         while (true) {
             System.out.print("Enter student name: ");
             name = scanner.nextLine().trim();
-            if (name.isEmpty() || name.matches("\\d+")) {
+            if (name.matches("[A-Za-z\\s]+")) break;
+            else{
                 System.out.println("Invalid name. Name cannot be empty or numeric only.");
-            } else {
-                break;
             }
         }
         return name;
