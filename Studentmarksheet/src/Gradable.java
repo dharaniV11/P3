@@ -1,4 +1,6 @@
 public interface Gradable {
-    String calculateGrade();
-    int getProjectMark();
+    double getAverage(Student student);
+
+    String calculateGrade(Student student);
+
 }

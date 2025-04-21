@@ -1,9 +1,9 @@
 import java.util.*;
 
-class StudentReportCardGenerator {
+public class Main {
     private static Map<Integer, Student> students = new HashMap<>();
     private static Scanner scanner = new Scanner(System.in);
-    private static Studentservice studentService = new Studentservice(students, scanner);
+    private static StudentService studentService = new StudentService(students, scanner);
 
     public static void main(String[] args) {
         while (true) {
@@ -56,57 +56,49 @@ class StudentReportCardGenerator {
 
         if (option == 1) {
             toDisplay.addAll(students.values());
-        } else if (option == 2)
-        {
-            String grade = "";
-            boolean validGrade = false;
-
-            // Keep asking for valid grade input
-            while (!validGrade) {
-                System.out.print("Enter grade to filter (A/B/C/D/F): ");
-                grade = scanner.nextLine().trim().toUpperCase();
-
-                // Check if the input is valid
-                if (grade.equals("A") || grade.equals("B") || grade.equals("C") || grade.equals("D") || grade.equals("F")) {
-                    validGrade = true;  // Exit the loop if the grade is valid
-                }
-                else {
-                    System.out.println("Invalid grade input. Please enter a valid grade (A, B, C, D, F).");
-                    viewReportCards();
-                }
-            }
-            // Filter students by the selected grade
+        } else if (option == 2) {
+            String grade = getGradeFilter();
             for (Student s : students.values()) {
-                if (s.calculateGrade().equals(grade)) {
+                if (studentService.calculateGrade(s).equals(grade)) {
                     toDisplay.add(s);
                 }
             }
         }
-        else
-        {
-            System.out.println("Invalid option.");
-            return;
-        }
+
         if (toDisplay.isEmpty()) {
             System.out.println("No students found for the given criteria.");
-            viewReportCards();
         } else {
             for (Student s : toDisplay) {
                 printReportCard(s);
             }
         }
     }
+
+    private static String getGradeFilter() {
+        String grade = "";
+        while (true) {
+            System.out.print("Enter grade to filter (A/B/C/D/F): ");
+            grade = scanner.nextLine().trim().toUpperCase();
+        if (grade.matches("[A,B,C,D,F]")) {
+                break;
+            }
+            System.out.println("Invalid input. Try again.");
+        }
+        return grade;
+    }
+
     private static void printReportCard(Student student) {
-        System.out.println("\n----------------------------------------");
-        System.out.println("Name      : " + student.getName());
+        System.out.println("\nREPORT CARD: " + student.getName().toUpperCase());
+        System.out.println("----------------------------------------");
+        System.out.println("Name      : " + student.getName().toUpperCase());
         System.out.println("Roll No.  : " + student.getRollNumber());
         System.out.println("Subjects  :");
         for (Map.Entry<String, Integer> entry : student.getSubjectMarks().entrySet()) {
             System.out.printf("  - %-10s : %3d\n", entry.getKey(), entry.getValue());
         }
-        System.out.println("Project   : " + student.getProjectMark() + " / 10" );
-        System.out.printf("Average   : %.2f\n", student.getAverage());
-        System.out.println("Grade     : " + student.calculateGrade());
+        System.out.println("Project   : " + student.getProjectMark() + " / 10");
+        System.out.printf("Average   : %.2f\n", studentService.getAverage(student));
+        System.out.println("Grade     : " + studentService.calculateGrade(student));
         System.out.println("----------------------------------------");
     }
 }
