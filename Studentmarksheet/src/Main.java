@@ -2,14 +2,15 @@ import java.util.*;
 import java.util.logging.*;
 
 public class Main {
-    private static Logger logger = Logger.getLogger(Main.class.getName());
+    private static Logger logger = Logger.getLogger(String.valueOf(Main.class));
     private static Map<Integer, Student> students = new HashMap<>();
     private static Scanner scanner = new Scanner(System.in);
     private static StudentService studentService = new StudentService(students, scanner);
 
     public static void main(String[] args) {
+        configureLogger();
         while (true) {
-            logger.info("\n====== Student Report Card Generator ======");
+            logger.info("\n\u001B[97m====== Student Report Card Generator ======");
             logger.info("1. Add Student");
             logger.info("2. View Report Cards (All / By Grade)");
             logger.info("3. Exit");
@@ -61,7 +62,7 @@ public class Main {
         } else if (option == 2) {
             String grade = getGradeFilter();
             for (Student s : students.values()) {
-                if (studentService.calculateGrade(s).equals(grade)) {
+                if (s.getGrade().equals(grade)) {
                     toDisplay.add(s);
                 }
             }
@@ -103,12 +104,28 @@ public class Main {
         logger.info("Roll No.  : " + student.getRollNumber());
         logger.info("Subjects  :");
         for (Map.Entry<String, Integer> entry : student.getSubjectMarks().entrySet()) {
-            logger.info(String.format("  - %-10s : %3d\n", entry.getKey(), entry.getValue()));
+            logger.info(String.format("  - %-10s : %3d", entry.getKey(), entry.getValue()));
         }
         logger.info("Project   : " + student.getProjectMark() + " / 10");
-        logger.info(String.format("Average   : %.2f", studentService.getAverage(student)));
-        logger.info("Grade     : " + studentService.calculateGrade(student));
+        logger.info(String.format("Average   : %.2f", student.getAverage()));
+        logger.info("Grade     : " + student.getGrade());
         logger.info("----------------------------------------");
+    }
+
+    private static void configureLogger() {
+        Logger rootLogger = Logger.getLogger("");
+        Handler[] handlers = rootLogger.getHandlers();
+
+        for (Handler handler : handlers) {
+            handler.setFormatter(new SimpleFormatter() {
+                private static final String FORMAT = "%s%n";
+
+                @Override
+                public synchronized String format(LogRecord record) {
+                    return String.format(FORMAT, record.getMessage());
+                }
+            });
+        }
     }
 
 }

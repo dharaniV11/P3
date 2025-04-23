@@ -5,6 +5,8 @@ public class Student {
     private int rollNumber;
     private Map<String, Integer> subjectMarks;
     private int projectMark;
+    private double average;
+    private String grade;
 
     // Constructor with parameters
     public Student(String name, int rollNumber, Map<String, Integer> subjectMarks, int projectMark) {
@@ -12,6 +14,8 @@ public class Student {
         this.rollNumber = rollNumber;
         this.subjectMarks = subjectMarks;
         this.projectMark = projectMark;
+        this.average = 0.0;
+        this.grade = "F";
     }
 
     public String getName() {
@@ -29,4 +33,21 @@ public class Student {
     public int getProjectMark() {
         return projectMark;
     }
+
+    public double getAverage() {
+        return average;
+    }
+
+    public void setAverage(double average) {
+        this.average = average;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
 }

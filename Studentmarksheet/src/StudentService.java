@@ -27,6 +27,13 @@ public class StudentService implements Gradable {
             int projectMark = getValidProjectMark();
 
             Student student = new Student(name, rollNumber, marks, projectMark);
+
+            double avg = getAverage(student);
+            String grade = calculateGrade(student);
+
+            student.setAverage(avg);
+            student.setGrade(grade);
+
             students.put(rollNumber, student);
             logger.info("Student added successfully!");
 
@@ -42,7 +49,7 @@ public class StudentService implements Gradable {
             name = scanner.nextLine().trim();
             if (name.matches("[A-Za-z\\s]+")) break;
             else{
-                logger.warning("Invalid name. Name cannot be empty or numeric only.");
+                logger.severe("Invalid name. Name cannot be empty or numeric only.");
             }
         }
         return name;
@@ -67,15 +74,15 @@ public class StudentService implements Gradable {
         while (true) {
             logger.info("Enter marks for " + subject + ": ");
             mark = getIntInput();
-            try {
-                if (mark < 0 || mark > 100) {
-                    throw new InvalidMarksException("Marks must be between 0 and 100.");
-                }
+
+            if (mark < 0 || mark > 100)
+                logger.warning("Subject mark must be between 0 and 100.");
+            else
+            {
                 break;
-            } catch (InvalidMarksException e) {
-                logger.warning("Error: " + e.getMessage());
             }
         }
+
         return mark;
     }
 
@@ -84,14 +91,11 @@ public class StudentService implements Gradable {
         while (true) {
             logger.info("Enter project mark (out of 10): ");
             projectMark = getIntInput();
-            try {
-                if (projectMark < 0 || projectMark > 10) {
-                    throw new InvalidMarksException("Project mark must be between 0 and 10.");
-                }
+
+            if (projectMark < 0 || projectMark > 10)
+                logger.warning("Project mark must be between 0 and 10.");
+            else
                 break;
-            } catch (InvalidMarksException e) {
-                logger.warning("Error: " + e.getMessage());
-            }
         }
         return projectMark;
     }
@@ -100,11 +104,11 @@ public class StudentService implements Gradable {
         while (true) {
             try {
                 int num = scanner.nextInt();
-                scanner.nextLine(); // consume newline
+                scanner.nextLine();
                 return num;
             } catch (InputMismatchException e) {
                 logger.warning("Invalid input. Please enter a valid number.");
-                scanner.nextLine(); // flush
+                scanner.nextLine();
             }
         }
     }
